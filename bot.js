@@ -35,15 +35,11 @@ const messageChannelIdX = '982880491566927882';
 // Define Command Channels ID X
 const commandChannelsIdX = ['976600623388688454', '976600638945370132', '976600654434926652','976600665369497681','976600675955933224','980004926044397568','980004937880731649','980004947137540156','980004955844919296','980004971191889960','980004986702405662'];
 
-// Define Message Channel ID X
-const { TextChannelX } = require('discord.js')
+// Define Message Channel IDs
+const { TextChannel } = require('discord.js')
 
 // Define Command Channels X
-const commandChannelsX = client.channels.cache.get(commandChannelsIdX) as TextChannel;
-
-// Define Message Channel X
-const messageChannelX = client.channels.cache.get(messageChannelIdX) as TextChannel;
-
+const commandChannelsX = client.channels.get(commandChannelsIdX) as TextChannel;
 
 // Define Announcement Channel ID Y
 const messageChannelIdY = '983467174993743934';
@@ -55,10 +51,25 @@ const commandChannelsIdY = ['976600623388688454', '976600638945370132', '9766006
 const { TextChannelY } = require('discord.js')
 
 // Define Command Channels Y
-const commandChannelsY = client.channels.cache.get(commandChannelsIdY) as TextChannel;
+const commandChannelsY = client.channels.get(commandChannelsIdY) as TextChannel;
 
-// Define Message Channel Y
-const messageChannelY = client.channels.cache.get(messageChannelIdY) as TextChannel;
+// Define Command Channels All
+const commandChannels = commandChannelsX + commandChannelsY
+	if(msg.author.bot || !(commandChannels.includes(msg.channel.id)))
+	{
+		return
+	}
+
+// Initialization
+client.on('ready', async () => {
+    console.log('Logged in as ${client.user.tag}!');
+});
+
+	// Define Message Channel X
+	messageChannelX = client.channels.get(messageChannelIdX)
+
+	// Define Message Channel Y
+	messageChannelY = client.channels.get(messageChannelIdY)
 
 // Make messages read-able by Nene
 client.on('message', async msg => {
@@ -127,4 +138,7 @@ client.on('message', async msg => {
 	} // End if
   }
 				
-				
+if(useAuthFile)
+	client.login(auth.token);
+else
+	client.login(process.env.BOT_TOKEN);			
