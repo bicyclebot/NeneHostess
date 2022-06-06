@@ -121,10 +121,10 @@ client.on('message', async msg => {
 		// Parse Command
 		switch(cmd.toLowerCase()) {
 			case 'genin5x': // sends a message to a given channel
-				msg.reply("Hit ``Ready`` in <t:${ts+5}:R>!);
+				msg.reply('Hit ``Ready`` in <t:${ts+5}:R>!');
 				break;
 			case 'genin5y': // sends a message to a given channel
-				msg.reply("Hit ``Ready`` in <t:${ts+5}:R>!);
+				msg.reply('Hit ``Ready`` in <t:${ts+5}:R>!');
 				break;
 
         } // End Switch
