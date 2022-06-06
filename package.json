@@ -1,0 +1,16 @@
+{
+ "name": "nenehostess",
+ "version": "1.0.0",
+ "description": "Bot for coordinating Cheerful Shows",
+ "main": "bot.js",
+ "scripts": {
+  "start": "node bot.js"
+ },
+ "keywords": [],
+ "author": "github.com/bicyclebot",
+ "license": "N/A",
+ "dependencies": {
+  "discord.js": "^11.5.1",
+  "pg": "^7.18.1"
+ }
+}
