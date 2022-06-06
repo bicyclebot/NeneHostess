@@ -82,4 +82,15 @@ if ((commandChannelsY && commandChannelsY.type === 'GUILD_TEXT') || (msg.content
 
 		// Parse Command
 		switch(cmd.toLowerCase()) {
-			case 'genin5': // sends a message to a given channel
+			case 'genin5x': // sends a message to a given channel
+				msg.reply("Hit ``Ready`` in 5 seconds!);
+				break;
+			case 'genin5y': // sends a message to a given channel
+				msg.reply("Hit ``Ready`` in 5 seconds!);
+				break;
+
+        } // End Switch
+	} // End if
+  }
+				
+				
