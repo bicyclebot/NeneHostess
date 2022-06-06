@@ -30,7 +30,6 @@ const errorFile="errorfile.log";
 
 // Set Up Timestamps
 const ts = Math.round((new Date()).getTime() / 1000);
-const tss = "<t:${ts+5}:R>;
 
 // Define Message Channel ID X
 const messageChannelIdX = '982880491566927882';
@@ -49,7 +48,7 @@ const messageChannelX = client.channels.cache.get(messageChannelIdX) as TextChan
 
 // Send Message to Message Channel X
 if ((commandChannelsX && commandChannelsX.type === 'GUILD_TEXT') || (msg.content === '!genin5x'))
-	messageChannelX.send('Lobby going up in tss seconds!');
+	messageChannelX.send('Lobby going up in <t:${ts+5}:R>!');
 
 
 // Define Announcement Channel ID Y
@@ -69,7 +68,7 @@ const messageChannelY = client.channels.cache.get(messageChannelIdY) as TextChan
 
 // Send Message to Channel Y
 if ((commandChannelsY && commandChannelsY.type === 'GUILD_TEXT') || (msg.content === '!genin5y'))
-								   messageChannelY.send('Lobby going up in 5 seconds!');
+								   messageChannelY.send('Lobby going up in <t:${ts+5}:R>!');
 
     // If using the Whitelist, check if channel is on it
 	if (useWhitelist && !message.startsWith(prefix + 'point'))
@@ -87,10 +86,10 @@ if ((commandChannelsY && commandChannelsY.type === 'GUILD_TEXT') || (msg.content
 		// Parse Command
 		switch(cmd.toLowerCase()) {
 			case 'genin5x': // sends a message to a given channel
-				msg.reply("Hit ``Ready`` in 5 seconds!);
+				msg.reply("Hit ``Ready`` in <t:${ts+5}:R>!);
 				break;
 			case 'genin5y': // sends a message to a given channel
-				msg.reply("Hit ``Ready`` in 5 seconds!);
+				msg.reply("Hit ``Ready`` in <t:${ts+5}:R>!);
 				break;
 
         } // End Switch
