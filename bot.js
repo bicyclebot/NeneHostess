@@ -28,6 +28,10 @@ const rebootlag=5000;
 const errorFile="errorfile.log";
 //const transferFile="temp.json";
 
+// Set Up Timestamps
+const ts = Math.round((new Date()).getTime() / 1000);
+const tss = "<t:${ts+5}:R>;
+
 // Define Message Channel ID X
 const messageChannelIdX = '982880491566927882';
 
@@ -45,7 +49,7 @@ const messageChannelX = client.channels.cache.get(messageChannelIdX) as TextChan
 
 // Send Message to Message Channel X
 if ((commandChannelsX && commandChannelsX.type === 'GUILD_TEXT') || (msg.content === '!genin5x'))
-								   messageChannelX.send('Lobby going up in 5 seconds!');
+	messageChannelX.send('Lobby going up in tss seconds!');
 
 
 // Define Announcement Channel ID Y
