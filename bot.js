@@ -4,13 +4,11 @@ const useWhitelist=true;
 
 // Import required libraries
 const Discord = require('discord.js');
-const botMethods= require('./chimethods.js');
 
 // Import required tables (authentication, blacklist, definition table)
 if(useAuthFile)
 	var auth = require('./auth.json');
 const blackfile = require('./blacklist.json');
-const definitionsFile = require('./definitions.json');
 
 // Set up client
 const client = new Discord.Client();
