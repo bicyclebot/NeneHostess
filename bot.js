@@ -38,9 +38,6 @@ const commandChannelsIdX = ['976600623388688454', '976600638945370132', '9766006
 // Define Message Channel IDs
 const { TextChannel } = require('discord.js')
 
-// Define Command Channels X
-const commandChannelsX = client.channels.get(commandChannelsIdX) as TextChannel;
-
 // Define Announcement Channel ID Y
 const messageChannelIdY = '983467174993743934';
 
@@ -50,15 +47,8 @@ const commandChannelsIdY = ['976600623388688454', '976600638945370132', '9766006
 // Define Message Channel ID Y
 const { TextChannelY } = require('discord.js')
 
-// Define Command Channels Y
-const commandChannelsY = client.channels.get(commandChannelsIdY) as TextChannel;
-
 // Define Command Channels All
-const commandChannels = commandChannelsX + commandChannelsY
-	if(msg.author.bot || !(commandChannels.includes(msg.channel.id)))
-	{
-		return
-	}
+const commandChannels = commandChannelsIdX + commandChannelsIdY
 
 // Initialization
 client.on('ready', async () => {
@@ -75,43 +65,9 @@ client.on('ready', async () => {
 client.on('message', async msg => {
     try {
 
-        // Escape if channel is in the blacklist or it is a message of the bot
-        if (useWhitelist) {
-            if (msg.author == client.user)
-                return;
-        }
-        else
-            if (channelBlacklist.indexOf(msg.channel.id) != -1 || msg.author == client.user)
-                return;
-
         // Extract content for easier manipulation
         let message = msg.content;
-
-        // If using the Whitelist, check if channel is on it
-        if (useWhitelist && !message.startsWith(prefix + 'point'))
-            if (channelWhitelist.indexOf(msg.channel.id) == -1)
-                return;
-
-        // Check if command for the bot
-        if (message.startsWith(prefix)) {
-
-            // Remove command indicatior prefix and split into args and command
-            let args = message.substring(prefix.length).split(' ');
-            let cmd = args[0];
-            args = args.splice(1);
-
-            // Parse Command
-            switch (cmd.toLowerCase()) {
-
-                case 'random thing':
-                    do something
-                    break;
-
-            } // End configure switch
-    // If using the Whitelist, check if channel is on it
-	if (useWhitelist && !message.startsWith(prefix + 'point'))
-		if (channelWhitelist.indexOf(msg.channel.id) == -1)
-			return;
+	  return;
 
     // Check if command for the bot
 	if (message.startsWith(prefix)) {
