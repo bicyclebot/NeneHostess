@@ -37,14 +37,14 @@ const commandChannelsIdX = ['976600623388688454', '976600638945370132', '9766006
 // Define Message Channel ID X
 const { TextChannelX } = require('discord.js')
 
-// Define Command Channel X
-const commandChannelX = client.channels.cache.get(commandChannelIdX) as TextChannelX;
+// Define Command Channels X
+const commandChannelsX = client.channels.cache.get(commandChannelsIdX) as TextChannel;
 
 // Define Message Channel X
-const messageChannelX = client.channels.cache.get(messageChannelIdX) as TextChannelX;
+const messageChannelX = client.channels.cache.get(messageChannelIdX) as TextChannel;
 
-// Send Message to Channel X
-if ((commandChannelsIdX && commandChannelsIdX.type === 'GUILD_TEXT') || (msg.content === '!genin5x'))
+// Send Message to Message Channel X
+if ((commandChannelsX && commandChannelsX.type === 'GUILD_TEXT') || (msg.content === '!genin5x'))
 								   messageChannelX.send('Lobby going up in 5 seconds!');
 
 
@@ -54,14 +54,17 @@ const messageChannelIdY = '983467174993743934';
 // Define Command Channels ID Y
 const commandChannelsIdY = ['976600623388688454', '976600638945370132', '976600654434926652','976600665369497681','976600675955933224','980004926044397568','980004937880731649','980004947137540156','980004955844919296','980004971191889960','980004986702405662'];
 
-// Define Message Channel ID X
+// Define Message Channel ID Y
 const { TextChannelY } = require('discord.js')
 
-// Define Channel Y
-const messageChannelY = client.channels.cache.get(messageChannelIdY) as TextChannelY;
+// Define Command Channels Y
+const commandChannelsY = client.channels.cache.get(commandChannelsIdY) as TextChannel;
+
+// Define Message Channel X
+const messageChannelY = client.channels.cache.get(messageChannelIdY) as TextChannel;
 
 // Send Message to Channel Y
-if ((commandChannelsIdY && commandChannelsIdY.type === 'GUILD_TEXT') || (msg.content === '!genin5y'))
+if ((commandChannelsY && commandChannelsY.type === 'GUILD_TEXT') || (msg.content === '!genin5y'))
 								   messageChannelY.send('Lobby going up in 5 seconds!');
 
 	// If using the Whitelist, check if channel is on it
