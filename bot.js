@@ -67,12 +67,12 @@ const messageChannelY = client.channels.cache.get(messageChannelIdY) as TextChan
 if ((commandChannelsY && commandChannelsY.type === 'GUILD_TEXT') || (msg.content === '!genin5y'))
 								   messageChannelY.send('Lobby going up in 5 seconds!');
 
-	// If using the Whitelist, check if channel is on it
+    // If using the Whitelist, check if channel is on it
 	if (useWhitelist && !message.startsWith(prefix + 'point'))
 		if (channelWhitelist.indexOf(msg.channel.id) == -1)
 			return;
 
-	// Check if command for the bot
+    // Check if command for the bot
 	if (message.startsWith(prefix)) {
 
 		// Remove command indicatior prefix and split into args and command
