@@ -27,7 +27,7 @@ const errorFile="errorfile.log";
 //const transferFile="temp.json";
 
 // Set Up Timestamps
-const ts = Math.round((new Date()).getTime() / 1000);
+var ts = Math.round((new Date()).getTime() / 1000);
 
 // Define Message Channel ID X
 const messageChannelIdX = '982880491566927882';
@@ -44,10 +44,6 @@ const commandChannelsX = client.channels.cache.get(commandChannelsIdX) as TextCh
 // Define Message Channel X
 const messageChannelX = client.channels.cache.get(messageChannelIdX) as TextChannel;
 
-// Send Message to Message Channel X
-if ((commandChannelsX && commandChannelsX.type === 'GUILD_TEXT') || (msg.content === '!genin5x'))
-	messageChannelX.send('Lobby going up in <t:${ts+5}:R>!');
-
 
 // Define Announcement Channel ID Y
 const messageChannelIdY = '983467174993743934';
@@ -61,12 +57,8 @@ const { TextChannelY } = require('discord.js')
 // Define Command Channels Y
 const commandChannelsY = client.channels.cache.get(commandChannelsIdY) as TextChannel;
 
-// Define Message Channel X
+// Define Message Channel Y
 const messageChannelY = client.channels.cache.get(messageChannelIdY) as TextChannel;
-
-// Send Message to Channel Y
-if ((commandChannelsY && commandChannelsY.type === 'GUILD_TEXT') || (msg.content === '!genin5y'))
-								   messageChannelY.send('Lobby going up in <t:${ts+5}:R>!');
 
 // Make messages read-able by Nene
 client.on('message', async msg => {
@@ -121,10 +113,14 @@ client.on('message', async msg => {
 		// Parse Command
 		switch(cmd.toLowerCase()) {
 			case 'genin5x': // sends a message to a given channel
+				ts = Math.round((new Date()).getTime() / 1000);
 				msg.reply('Hit ``Ready`` in <t:${ts+5}:R>!');
+				messageChannelX.send('Lobby going up in <t:${ts+5}:R>!');
 				break;
 			case 'genin5y': // sends a message to a given channel
+				ts = Math.round((new Date()).getTime() / 1000);
 				msg.reply('Hit ``Ready`` in <t:${ts+5}:R>!');
+				messageChannelY.send('Lobby going up in <t:${ts+5}:R>!');
 				break;
 
         } // End Switch
