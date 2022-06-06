@@ -68,6 +68,43 @@ const messageChannelY = client.channels.cache.get(messageChannelIdY) as TextChan
 if ((commandChannelsY && commandChannelsY.type === 'GUILD_TEXT') || (msg.content === '!genin5y'))
 								   messageChannelY.send('Lobby going up in <t:${ts+5}:R>!');
 
+// Make messages read-able by Nene
+client.on('message', async msg => {
+    try {
+
+        // Escape if channel is in the blacklist or it is a message of the bot
+        if (useWhitelist) {
+            if (msg.author == client.user)
+                return;
+        }
+        else
+            if (channelBlacklist.indexOf(msg.channel.id) != -1 || msg.author == client.user)
+                return;
+
+        // Extract content for easier manipulation
+        let message = msg.content;
+
+        // If using the Whitelist, check if channel is on it
+        if (useWhitelist && !message.startsWith(prefix + 'point'))
+            if (channelWhitelist.indexOf(msg.channel.id) == -1)
+                return;
+
+        // Check if command for the bot
+        if (message.startsWith(prefix)) {
+
+            // Remove command indicatior prefix and split into args and command
+            let args = message.substring(prefix.length).split(' ');
+            let cmd = args[0];
+            args = args.splice(1);
+
+            // Parse Command
+            switch (cmd.toLowerCase()) {
+
+                case 'random thing':
+                    do something
+                    break;
+
+            } // End configure switch
     // If using the Whitelist, check if channel is on it
 	if (useWhitelist && !message.startsWith(prefix + 'point'))
 		if (channelWhitelist.indexOf(msg.channel.id) == -1)
