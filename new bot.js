@@ -49,11 +49,17 @@ const commandChannels = commandChannelsIdX + commandChannelsIdY
 client.on('ready', async () => {
     console.log('Logged in as ${client.user.tag}!');
 
-    // Define Message Channel X
+    	  // Define Message Channel X
 	  messageChannelX = client.channels.get(messageChannelIdX);
 
 	  // Define Message Channel Y
 	  messageChannelY = client.channels.get(messageChannelIdY);
+	
+	  // Define Command Channels X
+	  commandChannelsX = client.channels.get(commandChannelsIdX);
+	  
+	  // Define Command Channels Y
+	  commandChannelsY = client.channels.get(commandChannelsIdY);
 });
 
 // Make messages read-able by Nene
@@ -76,7 +82,7 @@ client.on('message', async msg => {
             case 'generalroomin5':
                 ts = Math.round((new Date()).getTime() / 1000);
                 msg.reply(`Hit **__Ready__** in <t:${ts+5}:R>!`);
-                if (msg.channel.id in commandChannelsIdX) {
+                if (msg.channel.id in commandChannelsX) {
                     messageChannelX.send(`Lobby going up in <t:${ts+5}:R>!`);
                 } else { messageChannelY.send(`Lobby going up in <t:${ts+5}:R>!`);
                 break;
