@@ -73,18 +73,30 @@ client.on('message', async msg => {
 			switch(cmd.toLowerCase()) {
 				case 'generalroomin5':
 					if (commandChannelsIdX.includes(msg.channel.id)) {
-						messageChannelX.send(`Lobby going up in <t:${ts+5}:R>!`);
 						ts = Math.round((new Date()).getTime() / 1000);
-						msg.reply(`Hit **__Ready__** in <t:${ts+5}:R>!`);
+						messageChannelX.send(`Lobby going up in <t:${ts+5}:R>!`)
+							.then(msg => {
+								setTimeout(() => msg.delete(), 5000)
+							});
+						msg.reply(`Hit **__Ready__** in <t:${ts+5}:R>!`)
+							.then(msg => {
+								setTimeout(() => msg.delete(), 5000)
+							});
 					} else { 
-						messageChannelY.send(`Lobby going up in <t:${ts+5}:R>!`);
 						ts = Math.round((new Date()).getTime() / 1000);
-						msg.reply(`Hit **__Ready__** in <t:${ts+5}:R>!`);
+						messageChannelY.send(`Lobby going up in <t:${ts+5}:R>!`)
+							.then(msg => {
+								setTimeout(() => msg.delete(), 5000)
+							});
+						msg.reply(`Hit **__Ready__** in <t:${ts+5}:R>!`)
+							.then(msg => {
+								setTimeout(() => msg.delete(), 5000)
+							});
 					break;
-					}
 			}
 		}
 	}
+
 	// Error Message
 	catch (err) {
 		let time = "";
