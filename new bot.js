@@ -1,4 +1,4 @@
-// Set authentication method and if whitelist or blacklist
+// Set authentication
 const useAuthFile=true;
 
 // Import required libraries
@@ -18,6 +18,7 @@ const fs = require('fs');
 const prefix='!';
 const rebootlag=5000;
 const errorFile="errorfile.log";
+
 //const transferFile="temp.json";
 
 // Set Up Channel Variables
@@ -47,63 +48,57 @@ const commandChannels = commandChannelsIdX + commandChannelsIdY
 
 // Initialization
 client.on('ready', async () => {
-    console.log('Logged in as ${client.user.tag}!');
-
-    	  // Define Message Channel X
-	  messageChannelX = client.channels.get(messageChannelIdX);
-
-	  // Define Message Channel Y
-	  messageChannelY = client.channels.get(messageChannelIdY);
-	
-	  // Define Command Channels X
-	  commandChannelsX = client.channels.get(commandChannelsIdX);
-	  
-	  // Define Command Channels Y
-	  commandChannelsY = client.channels.get(commandChannelsIdY);
+	console.log('Logged in as ${client.user.tag}!');
+		// Define Message Channel X
+		messageChannelX = client.channels.get(messageChannelIdX);
+		// Define Message Channel Y
+	  	messageChannelY = client.channels.get(messageChannelIdY);
 });
 
 // Make messages read-able by Nene
 client.on('message', async msg => {
-    try {
-
-      // Extract content for easier manipulation
-      let message = msg.content;
-
-      // Check if command for the bot
-      if (message.startsWith(prefix)) {
-
-        // Remove command indicatior prefix and split into args and command
-        let args = message.substring(prefix.length).split(' ');
-        let cmd = args[0];
-        args = args.splice(1);
-
-        // Parse Command
-        switch(cmd.toLowerCase()) {
-            case 'generalroomin5':
-                ts = Math.round((new Date()).getTime() / 1000);
-                msg.reply(`Hit **__Ready__** in <t:${ts+5}:R>!`);
-                if (msg.channel.id in commandChannelsX) {
-                    messageChannelX.send(`Lobby going up in <t:${ts+5}:R>!`);
-                } else { messageChannelY.send(`Lobby going up in <t:${ts+5}:R>!`);
-                break;
-                }
-        }
-      }
-    }
-// Error Message
-    catch (err) {
-        let time = "";
-        try { time = new Date().toGMTString(); }
-        catch (er) { }
-        let errmess = time + ":\n" + err.stack + "\n\n";
-        fs.appendFile(errorFile, errmess, (error) => {
-            // If there's a problem writing errors, just silently suffer
-        });
-            console.log(errmess);
-            try { msg.channel.send("Oh, I don't feel so good."); }
-            catch (er) { }
-        } // End Switch
-    }) // End if
+	try {
+		// Extract content for easier manipulation
+		let message = msg.content;
+		
+		// Check if command for the bot
+		if (message.startsWith(prefix)) {
+			
+			// Remove command indicator prefix and split into args and command
+			let args = message.substring(prefix.length).split(' ');
+			let cmd = args[0];
+			args = args.splice(1);
+			
+			// Parse Command
+			switch(cmd.toLowerCase()) {
+				case 'generalroomin5':
+					if (commandChannelsIdX.includes(msg.channel.id)) {
+						messageChannelX.send(`Lobby going up in <t:${ts+5}:R>!`);
+						ts = Math.round((new Date()).getTime() / 1000);
+						msg.reply(`Hit **__Ready__** in <t:${ts+5}:R>!`);
+					} else { 
+						messageChannelY.send(`Lobby going up in <t:${ts+5}:R>!`);
+						ts = Math.round((new Date()).getTime() / 1000);
+						msg.reply(`Hit **__Ready__** in <t:${ts+5}:R>!`);
+					break;
+					}
+				}
+			}
+		}
+	// Error Message
+	catch (err) {
+		let time = "";
+		try { time = new Date().toGMTString(); }
+		catch (er) { }
+		let errmess = time + ":\n" + err.stack + "\n\n";
+		fs.appendFile(errorFile, errmess, (error) => {
+		// If there's a problem writing errors, just silently suffer
+	});
+		console.log(errmess);
+		try { msg.channel.send("We're overstaffed!"); }
+		catch (er) { }
+        		} // End Switch
+    		}) // End if
 
 if(useAuthFile)
 	client.login(auth.token);
