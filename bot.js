@@ -92,8 +92,7 @@ client.on('message', async msg => {
       }
     }
 // Error Message
-    catch {
-        catch (err) {
+    catch (err) {
         let time = "";
         try { time = new Date().toGMTString(); }
         catch (er) { }
@@ -105,10 +104,10 @@ client.on('message', async msg => {
             try { msg.channel.send("Oh, I don't feel so good."); }
             catch (er) { }
         } // End Switch
-    } // End if
-  }
-				
+    }) // End if
+
 if(useAuthFile)
 	client.login(auth.token);
 else
-	client.login(process.env.BOT_TOKEN);		
+	client.login(process.env.BOT_TOKEN);
+
