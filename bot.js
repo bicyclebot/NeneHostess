@@ -82,9 +82,9 @@ client.on('message', async msg => {
 						msg.reply(`Hit **__Ready__** in <t:${ts+5}:R>!`);
 					break;
 					}
-				}
 			}
 		}
+	}
 	// Error Message
 	catch (err) {
 		let time = "";
