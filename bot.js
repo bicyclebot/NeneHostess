@@ -1,21 +1,15 @@
 // Set authentication method and if whitelist or blacklist
-const useAuthFile=false;
-const useWhitelist=true;
+const useAuthFile=true;
 
 // Import required libraries
 const Discord = require('discord.js');
 
-// Import required tables (authentication, blacklist, definition table)
+// Import required tables (authentication)
 if(useAuthFile)
 	var auth = require('./auth.json');
-const blackfile = require('./blacklist.json');
 
 // Set up client
 const client = new Discord.Client();
-if(useWhitelist)
-	var channelWhitelist=blackfile.whitelisted;
-else
-	var channelBlacklist=blackfile.blacklisted;
 
 // Set up the fileEditor for saving settings
 const fs = require('fs'); 
@@ -25,6 +19,10 @@ const prefix='!';
 const rebootlag=5000;
 const errorFile="errorfile.log";
 //const transferFile="temp.json";
+
+// Set Up Channel Variables
+var messageChannelX;
+var messageChannelY;
 
 // Set Up Timestamps
 var ts = Math.round((new Date()).getTime() / 1000);
@@ -42,10 +40,7 @@ const { TextChannel } = require('discord.js')
 const messageChannelIdY = '983467174993743934';
 
 // Define Command Channels ID Y
-const commandChannelsIdY = ['976600623388688454', '976600638945370132', '976600654434926652','976600665369497681','976600675955933224','980004926044397568','980004937880731649','980004947137540156','980004955844919296','980004971191889960','980004986702405662'];
-
-// Define Message Channel ID Y
-const { TextChannelY } = require('discord.js')
+const commandChannelsIdY = ['976600686542327849', '976600712836444190', '976600727512313896','976600758466281474','976600736555221012','980005688107474974','980005702250659870','980005735050125332','980005752586518608','980005765706297354','980005785922838528'];
 
 // Define Command Channels All
 const commandChannels = commandChannelsIdX + commandChannelsIdY
@@ -53,13 +48,13 @@ const commandChannels = commandChannelsIdX + commandChannelsIdY
 // Initialization
 client.on('ready', async () => {
     console.log('Logged in as ${client.user.tag}!');
-});
 
 	// Define Message Channel X
-	messageChannelX = client.channels.get(messageChannelIdX)
+	messageChannelX = client.channels.get(messageChannelIdX);
 
 	// Define Message Channel Y
-	messageChannelY = client.channels.get(messageChannelIdY)
+	messageChannelY = client.channels.get(messageChannelIdY);
+});
 
 // Make messages read-able by Nene
 client.on('message', async msg => {
@@ -86,7 +81,7 @@ client.on('message', async msg => {
             case 'genin5y': // sends a message to a given channel
                 ts = Math.round((new Date()).getTime() / 1000);
                 msg.reply(`Hit **__Ready__** in <t:${ts+5}:R>!`);
-                messageChannelY.send('Lobby going up in <t:${ts+5}:R>!');
+                messageChannelY.send(`Lobby going up in <t:${ts+5}:R>!`);
                 break;
         }
       }
@@ -110,4 +105,3 @@ if(useAuthFile)
 	client.login(auth.token);
 else
 	client.login(process.env.BOT_TOKEN);
-
