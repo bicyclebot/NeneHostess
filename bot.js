@@ -1,11 +1,10 @@
-// Set authentication
-// Set authentication
-const useAuthFile=true;
+// Set authentication method and if whitelist or blacklist
+const useAuthFile=false;
 
 // Import required libraries
 const Discord = require('discord.js');
 
-// Import required tables (authentication)
+// Import required tables (authentication, blacklist, definition table)
 if(useAuthFile)
 	var auth = require('./auth.json');
 
@@ -19,113 +18,159 @@ const fs = require('fs');
 const prefix='!';
 const rebootlag=5000;
 const errorFile="errorfile.log";
-
+const messageChannelXJSON = "./xChannels.json"
+const messageChannelYJSON = "./yChannels.json"
 //const transferFile="temp.json";
-
-// Set Up Channel Variables
-var messageChannelX;
-var messageChannelY;
-
-// Set Up Timestamps
-var ts = Math.round((new Date()).getTime() / 1000);
-
-// Define Message Channel ID X
-const messageChannelIdX = '982880491566927882';
 
 // Define Command Channels ID X
 const commandChannelsIdX = ['976600623388688454', '976600638945370132', '976600654434926652','976600665369497681','976600675955933224','980004926044397568','980004937880731649','980004947137540156','980004955844919296','980004971191889960','980004986702405662'];
 
-// Define Message Channel IDs
-const { TextChannel } = require('discord.js')
-
-// Define Announcement Channel ID Y
-const messageChannelIdY = '983467174993743934';
-
 // Define Command Channels ID Y
 const commandChannelsIdY = ['976600686542327849', '976600712836444190', '976600727512313896','976600758466281474','976600736555221012','980005688107474974','980005702250659870','980005735050125332','980005752586518608','980005765706297354','980005785922838528'];
 
-// Define Command Channels All
+// Combined Channels
 const commandChannels = commandChannelsIdX + commandChannelsIdY
 
-// Initialization
+// Define Message Channel Objects
+var messageChannelIdsX = readJSON(messageChannelXJSON)
+var messageChannelIdsY = readJSON(messageChannelYJSON)
+
+var messageChannelsX = [];
+var messageChannelsY = [];
+var ts;
+
+var sendChannel;
+
+function readJSON(path)
+{
+	let rawdata = fs.readFileSync(path);
+	return JSON.parse(rawdata);
+}
+
+//Saves a JS Object to a JSON on a given path
+async function updateJSON(object, path)
+{
+	fs.writeFileSync(path, JSON.stringify(object));
+}
+
+//Given a channel arr and a path reloads the array with the json values
+function loadChannels(JSONPath) 
+{
+	var json = readJSON(JSONPath);
+	let channelArr = [];
+
+	var jsonObjects = Object.values(json)
+	jsonObjects.forEach(element => {
+		channelArr.push(client.channels.get(element))
+	});
+
+	return channelArr
+}
+
+//Sends a message to all channels in the channel array
+function sendMessage(channelArr, message)
+{
+	channelArr.forEach(element => 
+		element.send(message)
+	);
+}
+
 client.on('ready', async () => {
-	console.log('Logged in as ${client.user.tag}!');
-		// Define Message Channel X
-		messageChannelX = client.channels.get(messageChannelIdX);
-		// Define Message Channel Y
-	  	messageChannelY = client.channels.get(messageChannelIdY);
+	console.log(`Logged in as ${client.user.tag}!`);
+
+	messageChannelsX = loadChannels(messageChannelXJSON);
+	messageChannelsY = loadChannels(messageChannelYJSON);
 });
 
-// Make messages read-able by Nene
 client.on('message', async msg => {
 	try {
-		// Extract content for easier manipulation
+		if(msg.author.bot)
+		{
+			return;
+		}
+
+		console.log(`${msg.author.username} send message ${msg.content}`)
+
 		let message = msg.content;
-		let server = msg.guild.id
-		let channel = msg.channel.id
+		let serverid = msg.guild.id;
+
+		if (message.startsWith(prefix) && msg.member.permissionsIn(msg.channel).has("ADMINISTRATOR")) {
+
+			// Remove command indicatior prefix and split into args and command
+			let args = message.substring(prefix.length).split(' ');
+			let cmd = args[0];
+			args = args.splice(1);
+
+			//Before whitelisting
+			switch (cmd.toLowerCase()) {
+				case 'setchannelx':
+				messageChannelIdsX[serverid] = msg.channel.id;
+				await updateJSON(messageChannelIdsX, messageChannelXJSON);
+				messageChannelsX = loadChannels(messageChannelXJSON);
+				msg.channel.send("Added Channel X!")
+					.then(msgData => { setTimeout(() => msgData.delete(), 5000) });
+				break;
+
+				case 'setchannely':
+				messageChannelIdsY[serverid] = msg.channel.id;
+				await updateJSON(messageChannelIdsY, messageChannelYJSON);
+				messageChannelsY = loadChannels(messageChannelYJSON);
+				
+				msg.channel.send("Added Channel Y!")
+					.then(msgData => { setTimeout(() => msgData.delete(), 5000) });
+				break;
+			}
 		
-		// Check if command for the bot
-		if (message.startsWith(prefix)) {
-			
-			// Remove command indicator prefix and split into args and command
+		}
+		if (message.startsWith(prefix)) 
+		{
+			// Remove command indicatior prefix and split into args and command
 			let args = message.substring(prefix.length).split(' ');
 			let cmd = args[0];
 			args = args.splice(1);
 			
-			// Parse Command
-			switch(cmd.toLowerCase()) {
-				case 'generalroomin5':
-					if (commandChannelsIdX.includes(msg.channel.id)) {
+			//Channel whitelist
+			if (commandChannels.includes(msg.channel.id)) {
+				// Parse Command
+				switch (cmd.toLowerCase()) {
+					case 'generalroomin5': // sends a message to a given channel
+						if (msg.channel.id in commandChannelsIdX) {
+							sendChannel = messageChannelsY;
+						}
+						else {
+							sendChannel = messageChannelsX;
+						}
 						ts = Math.round((new Date()).getTime() / 1000);
-						messageChannelX.send(`Lobby going up in <t:${ts+5}:R>!`)
-							.then(msg => {
-								setTimeout(() => msg.delete(), 5000)
-							});
-						msg.reply(`Hit **__Ready__** in <t:${ts+5}:R>!`)
-							.then(msg => {
-								setTimeout(() => msg.delete(), 5000)
-							});
-					} else { 
-						ts = Math.round((new Date()).getTime() / 1000);
-						messageChannelY.send(`Lobby going up in <t:${ts+5}:R>!`)
-							.then(msg => {
-								setTimeout(() => msg.delete(), 5000)
-							});
-						msg.reply(`Hit **__Ready__** in <t:${ts+5}:R>!`)
-							.then(msg => {
-								setTimeout(() => msg.delete(), 5000)
-							});
-					}
-					msg.delete();
-					break;
-				case 'setchannelx':
-					// Define messageChannelX for other servers
-					messageChannelX[server] = channel
-                			break;
-				case 'setchannely':
-					// Define messageChannelY for other servers
-                        		messageChannelY[server] = channel
-                			break;
-			}
+						setTimeout(() => msg.reply(`Press __**Ready**__ now!`), 5000)
+						msg.channel.send(`Hit __**Ready**__ in <t:${ts + 5}:R>!`)
+							.then(msgData => { setTimeout(() => msgData.delete(), 5000) });
+						sendMessage(sendChannel, `Cheerful Live going up: <t:${ts + 5}:R>!`)
+						break;
+				} // End Switch
+			}	
 		}
 	}
-
-	// Error Message
 	catch (err) {
+
 		let time = "";
+
 		try { time = new Date().toGMTString(); }
 		catch (er) { }
-		let errmess = time + ":\n" + err.stack + "\n\n";
-		fs.appendFile(errorFile, errmess, (error) => {
-		// If there's a problem writing errors, just silently suffer
-	});
-		console.log(errmess);
-		try { msg.channel.send("We're understaffed!"); }
-		catch (er) { }
-        		} // End Switch
-    		}) // End if
 
-if(useAuthFile)
+		let errmess = time + ":\n" + err.stack + "\n\n";
+
+		fs.appendFile(errorFile, errmess, (error) => {
+			// If there's a problem writing errors, just silently suffer
+		});
+
+		console.log(errmess);
+
+		try { msg.channel.send("Oh, I don't feel so good."); }
+		catch (er) { }
+	}
+});
+
+if (useAuthFile)
 	client.login(auth.token);
 else
 	client.login(process.env.BOT_TOKEN);
