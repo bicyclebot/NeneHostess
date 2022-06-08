@@ -1,4 +1,5 @@
 // Set authentication
+// Set authentication
 const useAuthFile=true;
 
 // Import required libraries
@@ -60,6 +61,8 @@ client.on('message', async msg => {
 	try {
 		// Extract content for easier manipulation
 		let message = msg.content;
+		let server = msg.guild.id
+		let channel = msg.channel.id
 		
 		// Check if command for the bot
 		if (message.startsWith(prefix)) {
@@ -92,7 +95,17 @@ client.on('message', async msg => {
 							.then(msg => {
 								setTimeout(() => msg.delete(), 5000)
 							});
+					}
+					msg.delete();
 					break;
+				case 'setchannelx':
+					// Define messageChannelX for other servers
+					messageChannelX[server] = channel
+                			break;
+				case 'setchannely':
+					// Define messageChannelY for other servers
+                        		messageChannelY[server] = channel
+                			break;
 			}
 		}
 	}
@@ -107,7 +120,7 @@ client.on('message', async msg => {
 		// If there's a problem writing errors, just silently suffer
 	});
 		console.log(errmess);
-		try { msg.channel.send("We're overstaffed!"); }
+		try { msg.channel.send("We're understaffed!"); }
 		catch (er) { }
         		} // End Switch
     		}) // End if
